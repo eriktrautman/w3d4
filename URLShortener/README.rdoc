@@ -1,4 +1,8 @@
 Welcome to Erik and Vincent's URL Shortener!
 
+You can shorten a URL and open it using our client.
+
 Instructions:
-TBD
+This runs from the command line using
+$ rails runner script/test.rb
+Follow the prompts.  Functionality is very basic.
