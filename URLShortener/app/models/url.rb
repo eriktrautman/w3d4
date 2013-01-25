@@ -2,6 +2,8 @@ class Url < ActiveRecord::Base
   # attr_accessible :title, :body
   has_many :clicks
   has_many :comments
+  has_many :tags, :through => :tags_to_urls
+  has_many :tags_to_urls
   belongs_to :user
 
   # takes a long URL and either finds the existing short
@@ -17,7 +19,7 @@ class Url < ActiveRecord::Base
       url.user_id = user.id
       url.save!
     end
-    url.shortened
+    url
   end
 
   def self.launch_url(shortened_url, user)

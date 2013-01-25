@@ -1,9 +1,4 @@
-# user_name = ""
-# until User.exists?(user_name)
-#   print "Log in name > "
-#   user_name = gets.chomp
-
-# end
+# Erik and Vincent 1/24/13
 
   print "Log in name > "
   user_name = gets.chomp
@@ -31,7 +26,18 @@
       puts "Input url to shorten:"
       print " > "
       url = gets.chomp
-      puts Url.shorten_url(url, current_user)
+      puts "Select tag or tags to include (separated by commas)"
+      tags = Tag.all
+      tags.each_with_index do |tag, i|
+        puts "#{i} | #{tag.name} "
+      end
+      short_url =  Url.shorten_url(url, current_user)
+      puts short_url.shortened
+
+      tag_num = gets.chomp.split(',').map(&:to_i)
+      tag_num.each do |tag|
+        TagsToUrl.create(:url_id => short_url.id, :tag_id => tag)
+      end
     when 1
       puts "Input shortened url to launch:"
       print " > "
@@ -45,10 +51,16 @@
       print " > "
       text = gets.chomp
       puts Comment.create_comment(text, current_user.id, url)
+    when 3
     when 4
-    when 5
     else
       exit
     end
+# SELECT tags.name, COUNT(tag.id)
+# FROM tags
+#   JOIN tags_to_urls
+#     ON tags.id = tags_to_urls.tag_id
+#   GROUP BY tags.id
 
+# Tag.joins(TagsToUrl)
   end
