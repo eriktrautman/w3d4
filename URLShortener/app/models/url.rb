@@ -43,6 +43,7 @@ class Url < ActiveRecord::Base
     self.clicks.count
   end
 
+  # MZ: Nice use of pluck -- i wish i had remembered this
   def unique_click_count
     self.clicks.pluck(:user_id).uniq.count
   end

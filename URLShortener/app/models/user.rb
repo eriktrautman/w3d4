@@ -16,6 +16,9 @@ class User < ActiveRecord::Base
     not User.where(:name => user_name).empty?
   end
 
+  # MZ: Rails has dynamic finders that use "method_missing" to automagically make shit like this:
+  # u = User.find_by_{attribute}(user_name)
+  # This is pretty helpful and will make methods like this one unnecessary
   def self.get_obj_using_name(user_name)
     User.where(:name => user_name).first
   end
