@@ -1,6 +1,7 @@
 class Url < ActiveRecord::Base
   # attr_accessible :title, :body
   has_many :clicks
+  has_many :comments
   belongs_to :user
 
   # takes a long URL and either finds the existing short
@@ -28,22 +29,25 @@ class Url < ActiveRecord::Base
       Click.create(url_id: url.id, user_id: user.id)
       puts "Congrats! ...launching.... (not really)"
       #Launchy.open(url.long)
+      url.comments.each_with_index do |comment, i|
+        puts "#{i+1} | #{comment.text}"
+        puts
+      end
+      true
     end
   end
 
-  def self.click_count(long_url)
-    Url.where(:long => long_url).first.clicks.count
+  def click_count
+    self.clicks.count
   end
 
-  def self.unique_click_count(long_url)
-    Url.where(:long => long_url).first.clicks.pluck(:user_id).uniq.count
+  def unique_click_count
+    self.clicks.pluck(:user_id).uniq.count
   end
 
-  def self.clicks_since(long_url, num_mins = 10)
+  def clicks_since(num_mins = 10)
     threshold = num_mins.minutes.ago
-    url_obj = Url.where(:long => long_url).first
-    Click.find(:all,
-      :conditions => ['clicks.created_at > ? AND url_id = ?', threshold, url_obj.id]).size
+    self.clicks.find(:all, :conditions => ['clicks.created_at > ?', threshold]).size
   end
 
 end
