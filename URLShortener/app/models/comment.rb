@@ -1,4 +1,6 @@
 class Comment < ActiveRecord::Base
+  # MZ-1/27: I forgot to mention that in order to get the comment i made on line
+  # 14 to work, u would have to add these attr_accessibles ->  :user, :url
   attr_accessible :text, :user_id, :url_id
   belongs_to :url
   belongs_to :user
@@ -8,7 +10,7 @@ class Comment < ActiveRecord::Base
     # MZ: What if a different user had submitted the same link?
     # Maybe better to search with user & long_url
     url = Url.where(:long => long_url).first
-    # MZ: Here you can rewrite line #13 like this and rails accepts it:
+    # MZ: Here you can rewrite line #15 like this and rails accepts it:
     # create(:text => text, :user => user, :url => url)
     self.create(:text => text, :user_id => user_id, :url_id => url.id)
   end
