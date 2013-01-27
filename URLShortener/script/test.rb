@@ -3,6 +3,12 @@
   print "Log in name > "
   user_name = gets.chomp
 
+  # MZ: #exists? ... Nice convenience method!
+
+  # MZ: Check out the rails docs for #find_or_create
+  # I'm pretty sure it works with dynamic finders too so this entire conditional blockc ould be replaced with
+  # something like:
+  # current_user = User.find_or_create_by_name(user_name)
   if User.exists?(user_name)
     current_user = User.get_obj_using_name(user_name)
   else
